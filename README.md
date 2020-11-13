@@ -1,1 +1,6 @@
-# orientdb-import-export
+# OrientDB Import / Export
+
+Build using maven:
+```
+mvn clean install
+```
