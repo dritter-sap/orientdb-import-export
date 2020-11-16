@@ -3,7 +3,9 @@
 **Goals:**
 
 - Performance (current state)
+- Speedup
 - Compatibility
+- Stability
 
 Build using maven:
 ```
