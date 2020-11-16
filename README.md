@@ -1,5 +1,10 @@
 # OrientDB Import / Export
 
+**Goals:**
+
+- Performance (current state)
+- Compatibility
+
 Build using maven:
 ```
 mvn clean install
