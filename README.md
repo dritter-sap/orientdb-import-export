@@ -4,7 +4,7 @@
 
 - Performance (current state)
 - Speedup
-- Compatibility
+- Compatibility (between ODB versions)
 - Stability
 
 Build with maven:
