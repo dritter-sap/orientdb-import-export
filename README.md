@@ -3,7 +3,7 @@
 **Goals:**
 
 - Performance (current state)
-- Speedup
+- Speedup (refactoring)
 - Compatibility (between ODB versions)
 - Stability
 
