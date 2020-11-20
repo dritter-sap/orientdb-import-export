@@ -2,7 +2,7 @@
 
 **Goals:**
 
-- Performance (current state)
+- Performance assessment (current state)
 - Speedup (refactoring)
 - Compatibility (between ODB versions)
 - Stability
