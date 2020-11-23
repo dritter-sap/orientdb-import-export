@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-Description: OrientDB NoSQL document graph dbms
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Bundle-ManifestVersion: 2
+Bundle-Name: pipeline
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-SymbolicName: com.orientechnologies.pipeline
+Bundle-Vendor: OrientDB
+Bundle-Version: 3.2.0.SNAPSHOT
