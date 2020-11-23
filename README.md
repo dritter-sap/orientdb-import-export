@@ -7,6 +7,8 @@
 - Compatibility (between ODB versions)
 - Stability
 
+**Setup:**
+
 Build with maven:
 ```
 mvn clean install
