@@ -4,13 +4,18 @@ import com.orientechnologies.orient.core.command.OCommandOutputListener;
 import com.orientechnologies.orient.core.db.*;
 import com.orientechnologies.orient.core.db.tool.ODatabaseExport;
 import com.orientechnologies.orient.core.db.tool.ODatabaseImport;
+import me.tongfei.progressbar.ProgressBar;
+import org.apache.commons.math3.distribution.TDistribution;
+import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class Importer {
-  private final String databaseName = "testBench";
+  private static final int numberOfIterations = 25;
+  private static final double CI_LEVEL = 0.95;
+  private static final String databaseName = "testBench";
 
   private ODatabaseExport export;
   private ODatabaseImport importer;
@@ -24,11 +29,50 @@ public class Importer {
   private final ByteArrayOutputStream output = new ByteArrayOutputStream();
 
   public static void main(String[] args) {
+    final SummaryStatistics exportStatistics = new SummaryStatistics();
+    final SummaryStatistics importStatistics = new SummaryStatistics();
+
+    try (final ProgressBar pb = new ProgressBar("Iterations", numberOfIterations)) {
+      for (int i = 0; i < numberOfIterations; i++) {
+        // TODO: make configurable for atomic tasks
+        emptyExportImportWorkload(exportStatistics, importStatistics);
+        pb.step();
+      }
+      pb.stepTo(numberOfIterations);
+    }
+    System.out.println(
+        "Export(ms): "
+            + exportStatistics.getMean()
+            + ", error="
+            + calculateMeanCI(exportStatistics, CI_LEVEL));
+    System.out.println(
+        "Import(ms): "
+            + importStatistics.getMean()
+            + ", error="
+            + calculateMeanCI(importStatistics, 0.95));
+  }
+
+  private static void emptyExportImportWorkload(SummaryStatistics exportStatistics, SummaryStatistics importStatistics) {
     final Importer importer = new Importer();
     importer.init();
+    long start = System.currentTimeMillis();
     importer.exportDatabase();
+    exportStatistics.addValue(System.currentTimeMillis() - start);
+    start = System.currentTimeMillis();
     importer.importDatabase();
+    importStatistics.addValue(System.currentTimeMillis() - start);
     importer.tearDown();
+  }
+
+  private static double calculateMeanCI(final SummaryStatistics stats, double level) {
+    try {
+      final TDistribution tDist = new TDistribution(stats.getN() - 1);
+      final double criticalValue = tDist.inverseCumulativeProbability(1.0 - (1 - level) / 2);
+      return criticalValue * stats.getStandardDeviation() / Math.sqrt(stats.getN());
+    } catch (final Exception e) {
+      System.out.println("Failed to calculate the mean CI" + e.getMessage());
+      return Double.NaN;
+    }
   }
 
   public void init() {
