@@ -1,6 +1,5 @@
 package com.orientechnologies.orient.pipeline;
 
-import com.orientechnologies.orient.core.db.*;
 import java.util.concurrent.TimeUnit;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.profile.StackProfiler;
@@ -39,7 +38,7 @@ public class ImportExportBench {
 
   @TearDown(Level.Iteration)
   public void tearDown() {
-    importer.tearDown();
+    importer.tearDown(workload);
   }
 
   @Benchmark
