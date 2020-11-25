@@ -2,7 +2,7 @@
 
 **Goals:**
 
-- Performance assessment (current state)
+- Performance assessment (current state, considering empty / baseline and public databases)
 - Speedup (refactoring)
 - Compatibility (between ODB versions)
 - Stability
