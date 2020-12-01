@@ -3,6 +3,7 @@ package com.orientechnologies.orient.pipeline;
 import org.apache.commons.math3.distribution.TDistribution;
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +36,14 @@ public class Workload {
 
   public void setup() {
     for (final Operation operation : getOperations()) {
-      operation.setup();
+      ByteArrayOutputStream output = null;
+      if ("Export".equals(operation.getType())) {
+        output = new ByteArrayOutputStream();
+      } else if ("Import".equals(operation.getType()) && output == null) {
+        System.out.println("Export / Import pair is out of sync.");
+        output = new ByteArrayOutputStream();
+      }
+      operation.setup(output);
     }
   }
 

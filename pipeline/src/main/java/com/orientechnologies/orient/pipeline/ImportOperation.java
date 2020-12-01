@@ -10,22 +10,33 @@ import com.orientechnologies.orient.core.db.tool.ODatabaseImport;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 public class ImportOperation implements Operation {
   private ODatabaseImport importer;
   private ODatabaseSession importDatabase;
   private String databaseName;
+  private String name;
   private OrientDB orientDB;
 
-  public ImportOperation(
-      final OrientDB orientDB, final String databaseName) {
+  public ImportOperation(final String name, final OrientDB orientDB, final String databaseName) {
+    this.name = name;
     this.orientDB = orientDB;
     this.databaseName = databaseName;
   }
 
   @Override
-  public void setup() {
-    final ByteArrayOutputStream output = new ByteArrayOutputStream();
+  public String getName() {
+    return name;
+  }
+
+  @Override
+  public String getType() {
+    return "Import";
+  }
+
+  @Override
+  public void setup(final OutputStream output) {
     importDatabase = orientDB.open(databaseName, "admin", "admin");
     try {
       ODatabaseRecordThreadLocal.instance().set((ODatabaseDocumentInternal) importDatabase);
@@ -56,10 +67,5 @@ public class ImportOperation implements Operation {
     } catch (final Exception e) {
       System.out.println("Issues during teardown" + e.getMessage());
     }
-  }
-
-  @Override
-  public String getName() {
-    return "Import";
   }
 }

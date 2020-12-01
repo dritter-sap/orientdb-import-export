@@ -10,13 +10,15 @@ public class Importer {
   public static void main(String[] args) {
     final String exportDbUrl = "memory:target/export_" + Importer.class.getSimpleName();
     final OrientDB exportOrient = createDatabase(databaseName, exportDbUrl);
-    final Operation exportOperation = new ExportOperation(exportOrient, databaseName);
+    final Operation exportOperation =
+        new ExportOperation("EmptyExport", exportOrient, databaseName);
 
-    // final String importDbUrl = "memory:target/import_" + Importer.class.getSimpleName();
-    // final OrientDB importOrient = createDatabase(databaseName, importDbUrl);
-    // final Operation importOperation = new ImportOperation(importOrient, databaseName);
+    final String importDbUrl = "memory:target/import_" + Importer.class.getSimpleName();
+    final OrientDB importOrient = createDatabase(databaseName, importDbUrl);
+    final Operation importOperation =
+        new ImportOperation("EmptyImport", importOrient, databaseName);
 
-    final Workload workload = new Workload("Empty Import/Export", exportOperation/*, importOperation*/);
+    final Workload workload = new Workload("Empty Import/Export", exportOperation, importOperation);
     final Importer importer = new Importer();
     importer.execute(workload, numberOfIterations);
   }
