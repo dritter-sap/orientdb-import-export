@@ -25,9 +25,9 @@ public class Workload {
   private final List<Operation> operations;
   private final Map<String, SummaryStatistics> stats = new HashMap<>();
 
-  public Workload(final String name, final Operation... operations) {
+  public Workload(final String name, final Operation firstOperation, final Operation secondOperation) {
     this.name = name;
-    this.operations = Arrays.asList(operations);
+    this.operations = Arrays.asList(firstOperation, secondOperation);
 
     for (final Operation operation : operations) {
       stats.put(operation.getName(), new SummaryStatistics());
@@ -35,12 +35,13 @@ public class Workload {
   }
 
   public void setup() {
+    ByteArrayOutputStream output = null;
     for (final Operation operation : getOperations()) {
-      ByteArrayOutputStream output = null;
       if ("Export".equals(operation.getType())) {
+        System.out.println("Export / Import pair detected.");
         output = new ByteArrayOutputStream();
       } else if ("Import".equals(operation.getType()) && output == null) {
-        System.out.println("Export / Import pair is out of sync.");
+        System.out.println("Import / Export pair detected.");
         output = new ByteArrayOutputStream();
       }
       operation.setup(output);
@@ -50,9 +51,9 @@ public class Workload {
   public void execute() {
     for (final Operation operation : operations) {
       final SummaryStatistics statistics = stats.get(operation.getName());
-      long start = System.currentTimeMillis();
+      long start = System.nanoTime();
       operation.execute();
-      statistics.addValue(System.currentTimeMillis() - start);
+      statistics.addValue((System.nanoTime() - start) / 1000000);
     }
   }
 
