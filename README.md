@@ -14,7 +14,7 @@ Build with maven:
 mvn clean install
 ```
 
-> Note: there is no API for importing database directories (i.e. manual work by copying the directories into ODB's `/databases` directory). Only JSON files can be imported.
+> Note: there is no API for importing database directories (i.e. manual work by copying the directories into ODB's `/databases` directory). Normal JSON files can also not be loaded. Only *special* JSON files can be imported.
 
 **Links:**
 
