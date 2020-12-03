@@ -1,15 +1,14 @@
 package com.orientechnologies.orient.pipeline;
 
 import com.orientechnologies.orient.core.command.OCommandOutputListener;
-import com.orientechnologies.orient.core.db.ODatabaseDocumentInternal;
-import com.orientechnologies.orient.core.db.ODatabaseRecordThreadLocal;
-import com.orientechnologies.orient.core.db.ODatabaseSession;
-import com.orientechnologies.orient.core.db.OrientDB;
+import com.orientechnologies.orient.core.db.*;
 import com.orientechnologies.orient.core.db.tool.ODatabaseExport;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.stream.Stream;
 
 public class ExportOperation implements Operation {
   private ODatabaseExport export;
@@ -18,9 +17,8 @@ public class ExportOperation implements Operation {
   private OrientDB orientDB;
   private String databaseName;
 
-  public ExportOperation(final String name, final OrientDB orientDB, final String databaseName) {
+  public ExportOperation(final String name, final String databaseName) {
     this.name = name;
-    this.orientDB = orientDB;
     this.databaseName = databaseName;
   }
 
@@ -35,14 +33,22 @@ public class ExportOperation implements Operation {
   }
 
   @Override
-  public void setup(final OutputStream output) {
+  public void setup(String path) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void setup(final InputStream input) {
+    final String exportDbUrl = "memory:target/export_" + Importer.class.getSimpleName();
+    orientDB = createDatabase(databaseName, exportDbUrl);
+
     exportDatabase = orientDB.open(databaseName, "admin", "admin");
     try {
       exportDatabase.createClassIfNotExist("SimpleClass");
       export =
           new ODatabaseExport(
               (ODatabaseDocumentInternal) exportDatabase,
-              output,
+              System.out,
               new OCommandOutputListener() {
                 @Override
                 public void onMessage(String iText) {}
@@ -50,6 +56,12 @@ public class ExportOperation implements Operation {
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  private OrientDB createDatabase(final String database, final String url) {
+    final OrientDB orientDB = new OrientDB(url, OrientDBConfig.defaultConfig());
+    orientDB.createIfNotExists(database, ODatabaseType.PLOCAL);
+    return orientDB;
   }
 
   @Override

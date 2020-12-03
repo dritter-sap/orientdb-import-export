@@ -1,12 +1,13 @@
 package com.orientechnologies.orient.pipeline;
 
-import java.io.OutputStream;
+import java.io.InputStream;
 
 public interface Operation {
   String getName();
   String getType();
 
-  void setup(OutputStream output);
+  void setup(String path);
+  void setup(InputStream input);
   void execute();
   void tearDown();
 }
