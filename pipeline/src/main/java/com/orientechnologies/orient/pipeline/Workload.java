@@ -44,12 +44,12 @@ public class Workload {
       } else if ("Import".equals(operation.getType()) && output == null) {
         System.out.println("Import / Export pair detected.");
 
-        // output = (((ByteArrayOutputStream) ((ImportOperation) operation).getInput()));
-        final byte[] input = ((ImportOperation) operation).getInput();
+        // output = (((ByteArrayOutputStream) ((ImportExportOperation) operation).getInput()));
+        final byte[] input = ((ImportExportOperation) operation).getInput();
         output = new ByteArrayOutputStream(input.length);
         output.write(input, 0, input.length);
         // output = new ByteArrayOutputStream();
-        // IOUtils.copy(((ImportOperation) operation).getInput(), output);
+        // IOUtils.copy(((ImportExportOperation) operation).getInput(), output);
         if (output == null) {
           output = new ByteArrayOutputStream();
         }
@@ -62,7 +62,7 @@ public class Workload {
     for (final Operation operation : operations) {
       final SummaryStatistics statistics = stats.get(operation.getName());
       long start = System.nanoTime();
-      operation.execute();
+      operation.executeImport();
       final long elapsed = (System.nanoTime() - start) / 1000000;
       statistics.addValue(elapsed);
       System.out.println("Elapsed=" + elapsed);
