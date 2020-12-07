@@ -1,5 +1,7 @@
 # OrientDB Import / Export
 
+This is just a kind of playground for what will go into OrientDB tests.
+
 **Goals:**
 
 - Performance assessment (current state, considering empty / baseline and public databases)
