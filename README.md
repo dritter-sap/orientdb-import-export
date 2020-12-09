@@ -1,6 +1,6 @@
 # OrientDB Import / Export
 
-This is just a kind of playground for what will go into OrientDB tests.
+This is just a kind of *playground* for what will go into OrientDB tests.
 
 **Goals:**
 
