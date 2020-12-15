@@ -5,7 +5,7 @@ This is just a kind of *playground* for what will go into OrientDB tests.
 **Goals:**
 
 - Performance assessment (current state, considering empty / baseline and public databases)
-- Memory usage
+- Memory usage (OOM)
 - Speedup (refactoring)
 - Compatibility (between ODB versions)
 - Stability
