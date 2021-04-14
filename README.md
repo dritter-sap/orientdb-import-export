@@ -14,7 +14,7 @@ This is just a kind of *playground* for what will go into OrientDB tests regardi
 
 Build with maven:
 ```
-mvn clean install
+mvn clean package
 ```
 
 > Note: there is no API for importing database directories (i.e. manual work by copying the directories into ODB's `/databases` directory). Normal JSON files can also not be loaded. Only *special* JSON files can be imported.
