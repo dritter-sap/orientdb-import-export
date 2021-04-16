@@ -23,7 +23,7 @@ mvn clean package
 
 - [ ] use cases
 - [ ] super node test
-- [ ] open tickets
+- [ ] open CE tickets
 
 **Links:**
 
