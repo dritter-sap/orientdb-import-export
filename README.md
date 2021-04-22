@@ -19,6 +19,11 @@ mvn clean package
 
 > Note: there is no API for importing database directories (i.e. manual work by copying the directories into ODB's `/databases` directory). Normal JSON files can also not be loaded. Only *special* JSON files can be imported.
 
+If no local installation is at hand (also for older versions):
+```
+ docker run -d --name orientdb -p 2424:2424 -p 2480:2480 -e ORIENTDB_ROOT_PASSWORD=admin orientdb:2.2.27
+ ```
+
 **TODOs**
 
 - [ ] use cases
