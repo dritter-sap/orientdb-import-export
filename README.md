@@ -23,6 +23,7 @@ If no local installation is at hand (also for older versions):
 ```
  docker run -d --name orientdb -p 2424:2424 -p 2480:2480 -e ORIENTDB_ROOT_PASSWORD=admin orientdb:2.2.27
  ```
+ From the docker container, a database can be downloaded and added to another server, e.g. to test non export/import migration.
 
 **TODOs**
 
